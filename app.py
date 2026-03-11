@@ -15,7 +15,7 @@ if api_key:
     genai.configure(api_key=api_key)
 
 app = Flask(__name__)
-app.secret_key = 'super_secret_key_egram'  # Replace with a real secret key in production
+app.secret_key = os.getenv("SECRET_KEY", "super_secret_key_egram")
 
 # Upload Config
 UPLOAD_FOLDER = 'static/uploads'
@@ -192,7 +192,7 @@ Safety Rules:
 # Initialize model
 try:
     model = genai.GenerativeModel(
-        model_name="gemini-2.5-flash",
+        model_name="gemini-1.5-flash",
         system_instruction=system_instruction
     )
 except Exception as e:
@@ -208,12 +208,12 @@ def api_chat():
     try:
         genai.configure(api_key=api_key)
         local_model = genai.GenerativeModel(
-            model_name="gemini-2.5-flash",
+            model_name="gemini-1.5-flash",
             system_instruction=system_instruction
         )
     except Exception as e:
         print(f"Model init error: {e}")
-        return {"error": "Failed to initialize AI model."}, 500
+        return {"error": f"Failed to initialize AI model: {str(e)}"}, 500
         
     data = request.get_json()
     if not data or 'message' not in data:
