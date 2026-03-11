@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<div
+    class="row align-items-center mb-5 hero-section py-5 rounded-4 shadow-lg border-0 text-center text-lg-start glass-panel">
+    <div class="col-lg-6 p-4 p-md-5 z-1">
+        <span class="badge bg-white text-success shadow-sm mb-3 px-3 py-2 rounded-pill fw-semibold border"><i
+                class="fas fa-sparkles me-2 text-warning"></i>{{ t('hero_badge') }}</span>
+        <h1 class="display-4 fw-bolder text-success mb-3 lh-sm">
+            {{ t('hero_title_1') }} <br> <span class="text-dark">{{ t('hero_title_2') }}</span>
+        </h1>
+        <p class="lead text-dark mb-5 pe-lg-4 fw-medium" style="font-size: 1.15rem; line-height: 1.7;">
+            {{ t('hero_desc') }}
+        </p>
+        <div class="mt-4 gap-3 d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start">
+            <a href="{{ url_for('report_issue') }}" class="btn btn-success btn-lg shadow rounded-pill px-4">
+                {{ t('btn_report') }} <i class="fas fa-arrow-right ms-2 fs-6"></i>
+            </a>
+            <a href="{{ url_for('services') }}"
+                class="btn btn-outline-success bg-white btn-lg shadow-sm rounded-pill px-4">
+                <i class="fas fa-tractor me-2 text-success"></i> {{ t('btn_services') }}
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-6 text-center position-relative z-1 mt-5 mt-lg-0">
+        <!-- Modern Premium Image Context -->
+        <div class="position-relative d-inline-block p-2 bg-white rounded-4 shadow-lg hero-img-wrapper"
+            style="transform: rotate(2deg);">
+            <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                alt="Rural Innovation Farming" class="img-fluid rounded-3 hero-img"
+                style="max-height: 450px; width: 100%; object-fit: cover;">
+
+            <!-- Floating Badge Widget -->
+            <div class="position-absolute bg-white rounded-4 shadow-lg p-3 d-flex align-items-center"
+                style="bottom: -20px; left: -30px; transform: rotate(-2deg); border: 1px solid rgba(0,0,0,0.05);">
+                <div class="bg-light-success text-success rounded-circle d-flex align-items-center justify-content-center me-3"
+                    style="width: 45px; height: 45px;">
+                    <i class="fas fa-check fa-lg"></i>
+                </div>
+                <div class="text-start">
+                    <p class="mb-0 fw-bold text-dark fs-5">100%</p>
+                    <p class="mb-0 text-muted small">{{ t('stat_resolved') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5 pt-4 text-center">
+    <div class="col-12 mb-5">
+        <div class="d-inline-block px-4 py-3 glass-panel rounded-pill mb-3">
+            <h2 class="fw-bold text-dark mb-0">{{ t('cap_title') }}</h2>
+        </div>
+        <p class="text-light mx-auto max-w-sm fw-medium fs-5"
+            style="max-width: 600px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">{{ t('cap_desc') }}</p>
+    </div>
+
+    <!-- Features -->
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 feature-card glass-panel border-0 p-4">
+            <div class="card-body">
+                <div class="icon-circle mx-auto mb-4 bg-white shadow-sm" style="color: var(--primary);">
+                    <i class="fas fa-map-marker-alt fa-2x"></i>
+                </div>
+                <h4 class="card-title fw-bold text-dark">{{ t('ft1_title') }}</h4>
+                <p class="card-text text-dark fw-medium mt-3">{{ t('ft1_desc') }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 feature-card glass-panel border-0 p-4">
+            <div class="card-body">
+                <div class="icon-circle mx-auto mb-4 bg-white shadow-sm" style="color: var(--accent);">
+                    <i class="fas fa-leaf fa-2x"></i>
+                </div>
+                <h4 class="card-title fw-bold text-dark">{{ t('ft2_title') }}</h4>
+                <p class="card-text text-dark fw-medium mt-3">{{ t('ft2_desc') }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 feature-card glass-panel border-0 p-4">
+            <div class="card-body">
+                <div class="icon-circle mx-auto mb-4 bg-white shadow-sm" style="color: #555;">
+                    <i class="fas fa-broadcast-tower fa-2x"></i>
+                </div>
+                <h4 class="card-title fw-bold text-dark">{{ t('ft3_title') }}</h4>
+                <p class="card-text text-dark fw-medium mt-3">{{ t('ft3_desc') }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-light-success {
+        background-color: var(--secondary) !important;
+    }
+
+    .hero-img-wrapper {
+        transition: transform 0.5s ease;
+    }
+
+    .hero-img-wrapper:hover {
+        transform: rotate(0deg) !important;
+    }
+</style>
+{% endblock %}

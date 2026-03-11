@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-md-6 col-lg-5">
+        <div class="card glass-panel border-0 rounded-4 overflow-hidden mb-5">
+            <div class="card-header bg-transparent text-center py-5 border-bottom-0 pb-3">
+                <div class="bg-white bg-opacity-25 d-inline-flex align-items-center justify-content-center rounded-circle mb-3 shadow-sm border border-light"
+                    style="width: 80px; height: 80px;">
+                    <i class="fas fa-user-shield fa-2x text-white"></i>
+                </div>
+                <h3 class="mb-0 fw-bold text-white">Admin Portal</h3>
+                <p class="text-light small mt-2 fw-medium">Secure access for local authorities</p>
+                <hr class="border-light opacity-50 mt-4 mb-0 mx-4">
+            </div>
+            <div class="card-body p-4 p-md-5 pt-4">
+                <form action="{{ url_for('admin_login') }}" method="POST" class="needs-validation" novalidate>
+                    <div class="mb-4">
+                        <label for="username" class="form-label fw-semibold text-white ms-1 mb-2">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text glass-input border-end-0 text-white"><i
+                                    class="fas fa-user"></i></span>
+                            <input type="text"
+                                class="form-control form-control-lg glass-input border-start-0 ps-0 text-white"
+                                id="username" name="username" required placeholder="Enter admin username">
+                        </div>
+                    </div>
+                    <div class="mb-5">
+                        <label for="password" class="form-label fw-semibold text-white ms-1 mb-2">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text glass-input border-end-0 text-white"><i
+                                    class="fas fa-lock"></i></span>
+                            <input type="password"
+                                class="form-control form-control-lg glass-input border-start-0 ps-0 text-white"
+                                id="password" name="password" required placeholder="Enter password">
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="btn btn-success btn-lg w-100 fw-bold shadow-lg rounded-pill py-3 border-0"
+                        style="background: linear-gradient(135deg, #1e3a2b, #2c5540);">
+                        Secure Login <i class="fas fa-arrow-right ms-2 fs-6"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

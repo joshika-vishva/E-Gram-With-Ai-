@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<div class="row justify-content-center mt-3">
+    <div class="col-lg-8">
+        <div class="card glass-panel border-0 rounded-4 overflow-hidden mb-5">
+            <div class="card-header border-bottom-0 pb-0 pt-4 px-4 px-md-5 bg-transparent">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-white text-success rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm"
+                        style="width: 50px; height: 50px;">
+                        <i class="fas fa-bullhorn fa-lg"></i>
+                    </div>
+                    <h2 class="mb-0 fw-bold text-white">{{ t('report_title') }}</h2>
+                </div>
+                <p class="text-light fw-medium">{{ t('report_desc') }}</p>
+                <hr class="border-light opacity-50">
+            </div>
+
+            <div class="card-body p-4 p-md-5 pt-2">
+                <form action="{{ url_for('report_issue') }}" method="POST" enctype="multipart/form-data"
+                    class="needs-validation" novalidate>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control glass-input" id="name" name="name"
+                                    placeholder="Name" required>
+                                <label for="name"><i class="fas fa-user me-2"></i>{{ t('lbl_name') }} <span
+                                        class="text-danger">*</span></label>
+                                <div class="invalid-feedback text-white ps-2">Required field.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="tel" class="form-control glass-input" id="phone" name="phone"
+                                    pattern="[0-9]{10}" placeholder="Phone" required>
+                                <label for="phone"><i class="fas fa-phone me-2"></i>{{ t('lbl_phone') }}
+                                    <span class="text-danger">*</span></label>
+                                <div class="invalid-feedback text-white ps-2">10-digit number required.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control glass-input" id="village" name="village"
+                                    placeholder="Village" required>
+                                <label for="village"><i class="fas fa-map-marker-alt me-2"></i>{{
+                                    t('lbl_village') }} <span class="text-danger">*</span></label>
+                                <div class="invalid-feedback text-white ps-2">Required field.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select glass-input text-white" id="problem_type" name="problem_type"
+                                    required>
+                                    <option value="" selected disabled class="text-dark">{{ t('cat_select') }}</option>
+                                    <option value="Water" class="text-dark">{{ t('cat_water') }}</option>
+                                    <option value="Electricity" class="text-dark">{{ t('cat_elec') }}</option>
+                                    <option value="Roads" class="text-dark">{{ t('cat_roads') }}</option>
+                                    <option value="Sanitation" class="text-dark">{{ t('cat_san') }}</option>
+                                    <option value="Agriculture" class="text-dark">{{ t('cat_agri') }}</option>
+                                    <option value="Other" class="text-dark">{{ t('cat_other') }}</option>
+                                </select>
+                                <label for="problem_type"><i class="fas fa-list-ul me-2"></i>{{
+                                    t('lbl_category') }} <span class="text-danger">*</span></label>
+                                <div class="invalid-feedback text-white ps-2">Please select a category.</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="description" class="form-label fw-semibold text-white ms-1 mb-2">{{
+                                t('lbl_desc') }} <span class="text-danger">*</span></label>
+                            <textarea class="form-control glass-input rounded-4" id="description" name="description"
+                                rows="5" placeholder="Please describe the issue in detail..." required
+                                style="resize: none;"></textarea>
+                            <div class="invalid-feedback text-white ps-2">Description required.</div>
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <div class="p-4 glass-panel rounded-4 text-center"
+                                style="border-style: dashed !important; border-color: rgba(255,255,255,0.4) !important;">
+                                <label for="image" class="form-label fw-bold d-block mb-3 cursor-pointer text-white">
+                                    <div class="bg-white rounded-circle shadow-sm d-inline-flex align-items-center justify-content-center mb-2"
+                                        style="width: 60px; height: 60px;">
+                                        <i class="fas fa-cloud-upload-alt fa-2x text-success"></i>
+                                    </div>
+                                    <br>
+                                    {{ t('lbl_image') }}
+                                </label>
+                                <input type="file" class="form-control form-control-sm mx-auto glass-input text-white"
+                                    id="image" name="image" accept="image/*" style="max-width: 300px;">
+                                <small class="text-light mt-2 d-block">Supported formats: JPG, PNG. Max 5MB.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-5">
+                            <button type="submit"
+                                class="btn btn-success btn-lg w-100 shadow rounded-pill py-3 fw-bold border-0"
+                                style="background: linear-gradient(135deg, #1e3a2b, #2c5540);">
+                                <i class="fas fa-paper-plane me-2"></i> {{ t('btn_submit') }}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
+    <div class="mb-4 mb-md-0">
+        <span class="badge glass-panel text-white shadow-sm mb-2 px-3 py-2 rounded-pill fw-semibold border"><i
+                class="fas fa-shield-alt me-1"></i> Control Center</span>
+        <h2 class="fw-bolder display-6 mb-0 text-white" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Admin Dashboard
+        </h2>
+    </div>
+    <a href="{{ url_for('admin_logout') }}" class="btn btn-outline-light rounded-pill shadow-sm px-4">
+        <i class="fas fa-sign-out-alt me-2"></i> Logout
+    </a>
+</div>
+
+<ul class="nav nav-pills mb-4 nav-fill custom-nav-pills shadow-sm rounded-4 p-2 glass-panel border border-light"
+    id="adminTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active fw-bold py-3" id="complaints-tab" data-bs-toggle="pill"
+            data-bs-target="#complaints" type="button" role="tab"><i class="fas fa-clipboard-list me-2"></i> User
+            Complaints</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-bold py-3" id="announcements-tab" data-bs-toggle="pill"
+            data-bs-target="#announcements" type="button" role="tab"><i class="fas fa-bullhorn me-2"></i> Add
+            Announcement</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-bold py-3" id="services-tab" data-bs-toggle="pill" data-bs-target="#services"
+            type="button" role="tab"><i class="fas fa-tractor me-2"></i> Add Service</button>
+    </li>
+</ul>
+
+<div class="tab-content" id="adminTabsContent">
+    <!-- COMPLAINTS TAB -->
+    <div class="tab-pane fade show active" id="complaints" role="tabpanel">
+        <div class="card glass-panel border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0"
+                        style="min-width: 800px; --bs-table-bg: transparent; --bs-table-color: white;">
+                        <thead class="bg-white bg-opacity-10 text-light border-light">
+                            <tr>
+                                <th class="ps-4 py-4 fw-semibold border-bottom-0">ID</th>
+                                <th class="py-4 fw-semibold border-bottom-0">Citizen</th>
+                                <th class="py-4 fw-semibold border-bottom-0">Village</th>
+                                <th class="py-4 fw-semibold border-bottom-0">Category</th>
+                                <th class="py-4 fw-semibold border-bottom-0">Date</th>
+                                <th class="py-4 fw-semibold border-bottom-0">Status</th>
+                                <th class="text-end pe-4 py-4 fw-semibold border-bottom-0">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="border-top-0">
+                            {% for c in complaints %}
+                            <tr>
+                                <td class="ps-4 py-3"><span class="text-muted fw-semibold">#{{ c.id }}</span></td>
+                                <td class="py-3">
+                                    <div class="fw-bold text-dark">{{ c.user_name }}</div>
+                                    <small class="text-muted"><i class="fas fa-phone-alt me-1"
+                                            style="font-size: 0.75rem;"></i>{{ c.phone }}</small>
+                                </td>
+                                <td class="py-3 fw-medium">{{ c.village }}</td>
+                                <td class="py-3"><span
+                                        class="badge bg-light text-dark border px-3 py-2 rounded-pill shadow-sm">{{
+                                        c.problem_type }}</span></td>
+                                <td class="py-3"><small class="text-muted fw-medium">{{ c.created_at.split(' ')[0] if
+                                        c.created_at else 'N/A' }}</small></td>
+                                <td class="py-3">
+                                    {% if c.status == 'Pending' %}
+                                    <span
+                                        class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-3 py-2 rounded-pill"><i
+                                            class="fas fa-circle me-1"
+                                            style="font-size: 0.5rem; vertical-align: middle;"></i> Pending</span>
+                                    {% elif c.status == 'In Progress' %}
+                                    <span
+                                        class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-3 py-2 rounded-pill"><i
+                                            class="fas fa-circle me-1"
+                                            style="font-size: 0.5rem; vertical-align: middle;"></i> In Progress</span>
+                                    {% else %}
+                                    <span
+                                        class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-pill"><i
+                                            class="fas fa-circle me-1"
+                                            style="font-size: 0.5rem; vertical-align: middle;"></i> Resolved</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end pe-4 py-3">
+                                    <button type="button" class="btn btn-sm btn-dark rounded-pill px-3 shadow-sm"
+                                        data-bs-toggle="modal" data-bs-target="#viewModal{{ c.id }}">
+                                        Manage
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- MODAL FOR EACH COMPLAINT -->
+                            <div class="modal fade" id="viewModal{{ c.id }}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content rounded-4 border-0 shadow-lg">
+                                        <div class="modal-header bg-light border-bottom-0 p-4">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm me-3"
+                                                    style="width: 40px; height: 40px;">
+                                                    <i class="fas fa-file-alt text-primary"></i>
+                                                </div>
+                                                <h5 class="modal-title fw-bold m-0">Report #{{ c.id }}</h5>
+                                            </div>
+                                            <button type="button" class="btn-close bg-white rounded-circle shadow-sm"
+                                                data-bs-dismiss="modal" aria-label="Close"
+                                                style="padding: 0.8rem;"></button>
+                                        </div>
+                                        <div class="modal-body p-4 p-md-5">
+                                            <div class="row g-5">
+                                                <div class="col-md-7">
+                                                    <h6 class="fw-bold text-muted text-uppercase mb-3"
+                                                        style="letter-spacing: 1px; font-size: 0.8rem;">Citizen Details
+                                                    </h6>
+                                                    <div class="bg-light rounded-4 p-4 mb-4">
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <span class="text-muted">Name</span>
+                                                            <span class="fw-bold text-dark">{{ c.user_name }}</span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mb-2">
+                                                            <span class="text-muted">Phone</span>
+                                                            <span class="fw-bold text-dark">{{ c.phone }}</span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <span class="text-muted">Village</span>
+                                                            <span class="fw-bold text-dark">{{ c.village }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <h6 class="fw-bold text-muted text-uppercase mb-3"
+                                                        style="letter-spacing: 1px; font-size: 0.8rem;">Issue
+                                                        Description</h6>
+                                                    <div class="d-flex mb-3">
+                                                        <span
+                                                            class="badge bg-primary bg-opacity-10 text-primary border px-3 py-2 rounded-pill">{{
+                                                            c.problem_type }}</span>
+                                                    </div>
+                                                    <p class="text-dark lh-lg p-3 bg-light rounded-4">{{ c.description
+                                                        }}</p>
+                                                </div>
+
+                                                <div class="col-md-5">
+                                                    <h6 class="fw-bold text-muted text-uppercase mb-3"
+                                                        style="letter-spacing: 1px; font-size: 0.8rem;">Evidence Details
+                                                    </h6>
+                                                    {% if c.image_path %}
+                                                    <div class="position-relative mb-4">
+                                                        <img src="{{ url_for('static', filename='uploads/' + c.image_path) }}"
+                                                            class="img-fluid rounded-4 shadow-sm w-100"
+                                                            style="max-height: 250px; object-fit: cover;"
+                                                            alt="Issue Image">
+                                                        <a href="{{ url_for('static', filename='uploads/' + c.image_path) }}"
+                                                            target="_blank"
+                                                            class="btn btn-sm btn-light position-absolute bottom-0 end-0 m-3 rounded-pill shadow">
+                                                            <i class="fas fa-expand-alt me-1"></i> View Full
+                                                        </a>
+                                                    </div>
+                                                    {% else %}
+                                                    <div class="bg-light d-flex align-items-center justify-content-center rounded-4 mb-4"
+                                                        style="height: 200px; border: 2px dashed #dee2e6;">
+                                                        <div class="text-center text-muted">
+                                                            <i class="fas fa-image fa-3x mb-3 opacity-25"></i>
+                                                            <p class="mb-0 fw-medium">No Image Provided</p>
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+
+                                                    <hr class="opacity-10 my-4">
+
+                                                    <form action="{{ url_for('admin_dashboard') }}" method="POST">
+                                                        <h6 class="fw-bold text-muted text-uppercase mb-3"
+                                                            style="letter-spacing: 1px; font-size: 0.8rem;">Resolution
+                                                            Status</h6>
+                                                        <input type="hidden" name="complaint_id" value="{{ c.id }}">
+                                                        <div class="form-floating mb-4">
+                                                            <select class="form-select bg-white fw-bold"
+                                                                name="new_status" id="statusSelect{{ c.id }}">
+                                                                <option value="Pending" {% if c.status=='Pending'
+                                                                    %}selected{% endif %}>Pending</option>
+                                                                <option value="In Progress" {% if
+                                                                    c.status=='In Progress' %}selected{% endif %}>In
+                                                                    Progress</option>
+                                                                <option value="Resolved" {% if c.status=='Resolved'
+                                                                    %}selected{% endif %}>Resolved</option>
+                                                            </select>
+                                                            <label for="statusSelect{{ c.id }}">Update State</label>
+                                                        </div>
+                                                        <button type="submit" name="update_status"
+                                                            class="btn btn-primary w-100 rounded-pill py-3 shadow-sm fw-bold">Update
+                                                            Status <i class="fas fa-check ms-2"></i></button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state bg-transparent border-0 my-4 text-center py-5">
+                                        <div class="empty-state-icon bg-white bg-opacity-10 border border-light d-inline-flex justify-content-center align-items-center mb-3 shadow-sm"
+                                            style="width: 80px; height: 80px; border-radius: 50%;">
+                                            <i class="fas fa-clipboard-check fa-3x text-white"></i>
+                                        </div>
+                                        <h4 class="fw-bold text-white">No Pending Complaints</h4>
+                                        <p class="text-light">The village is completely issue-free.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ANNOUNCEMENTS TAB -->
+    <div class="tab-pane fade" id="announcements" role="tabpanel">
+        <div class="card glass-panel border-0 shadow-sm rounded-4 max-w-md mx-auto mb-5" style="max-width: 600px;">
+            <div class="card-header bg-transparent border-bottom-0 p-4 pb-0 text-center">
+                <div class="bg-white bg-opacity-25 text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm border border-light"
+                    style="width: 60px; height: 60px;">
+                    <i class="fas fa-bullhorn fa-lg"></i>
+                </div>
+                <h3 class="fw-bold mb-1 text-white">Create Broadcast</h3>
+                <p class="text-light">Push a new alert to all villagers immediately.</p>
+            </div>
+            <div class="card-body p-4 p-md-5 pt-3">
+                <form action="{{ url_for('admin_dashboard') }}" method="POST">
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control glass-input" id="annTitle" name="title" required
+                            placeholder="Announcement Title">
+                        <label for="annTitle" class="text-white"><i class="fas fa-heading me-2"></i> Title</label>
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="annDesc" class="form-label fw-semibold text-white ms-1 mb-2">Full Message</label>
+                        <textarea class="form-control glass-input rounded-4" id="annDesc" name="description" rows="5"
+                            required placeholder="Detailed message/content" style="resize: none;"></textarea>
+                    </div>
+
+                    <button type="submit" name="add_announcement"
+                        class="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm">
+                        Publish Broadcast <i class="fas fa-paper-plane ms-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICES TAB -->
+    <div class="tab-pane fade" id="services" role="tabpanel">
+        <div class="card glass-panel border-0 shadow-sm rounded-4 max-w-md mx-auto mb-5" style="max-width: 600px;">
+            <div class="card-header bg-transparent border-bottom-0 p-4 pb-0 text-center">
+                <div class="bg-white bg-opacity-25 text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm border border-light"
+                    style="width: 60px; height: 60px;">
+                    <i class="fas fa-tractor fa-lg"></i>
+                </div>
+                <h3 class="fw-bold mb-1 text-white">Add Scheme</h3>
+                <p class="text-light">List a new agricultural or government service.</p>
+            </div>
+            <div class="card-body p-4 p-md-5 pt-3">
+                <form action="{{ url_for('admin_dashboard') }}" method="POST">
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control glass-input" id="servName" name="service_name" required
+                            placeholder="Service Name">
+                        <label for="servName" class="text-white"><i class="fas fa-tag me-2"></i> Scheme Name</label>
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="servDesc" class="form-label fw-semibold text-white ms-1 mb-2">Description /
+                            Eligibility Details</label>
+                        <textarea class="form-control glass-input rounded-4" id="servDesc" name="service_description"
+                            rows="5" required placeholder="Explain the benefits and how to apply"
+                            style="resize: none;"></textarea>
+                    </div>
+
+                    <button type="submit" name="add_service"
+                        class="btn btn-success w-100 py-3 rounded-pill fw-bold shadow-sm">
+                        Deploy Service <i class="fas fa-plus-circle ms-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-nav-pills {
+        border-color: #eaeaea !important;
+    }
+
+    .custom-nav-pills .nav-link {
+        color: var(--text-muted);
+        border-radius: var(--radius-sm);
+        transition: all 0.3s ease;
+    }
+
+    .custom-nav-pills .nav-link:hover {
+        background-color: #f8f9fa;
+        color: var(--primary);
+    }
+
+    .custom-nav-pills .nav-link.active {
+        background-color: var(--primary);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(30, 58, 43, 0.2);
+    }
+
+    .table> :not(caption)>*>* {
+        border-bottom-color: #f0f0f0;
+    }
+
+    .bg-opacity-10 {
+        background-color: rgba(var(--bs-primary-rgb), 0.1) !important;
+    }
+</style>
+{% endblock %}
