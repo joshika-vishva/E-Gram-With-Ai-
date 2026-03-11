@@ -228,8 +228,12 @@ def api_chat():
     except Exception as e:
         import traceback
         traceback.print_exc()
+        error_msg = str(e)
+        if "User location is not supported" in error_msg:
+            error_msg = "The Google AI API is currently restricted in the region where this server is hosted. Please try again later or contact support."
+        
         print(f"Chat API Error: {e}")
-        return {"error": "Failed to generate response. Please try again later."}, 500
+        return {"error": f"Failed to generate response: {error_msg}"}, 500
 
 if __name__ == '__main__':
     app.run(debug=True)
