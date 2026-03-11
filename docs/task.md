@@ -1,0 +1,28 @@
+- [x] Project Initialization
+- [x] Database Setup
+- [x] Backend Implementation (Flask)
+- [x] Frontend Implementation
+- [x] Static Assets
+- [x] Final Review and Documentation
+- [x] Premium UI Improvements
+- [x] Bilingual Support (English/Tamil)
+- [x] Further UI Enhancements
+- [x] Admin Dashboard Premium UI
+    - [x] Revamp Admin Login
+    - [x] Revamp Admin Dashboard
+- [x] AI Agriculture Chatbot Setup
+    - [x] Create `/api/chat` backend endpoint using `google-generativeai`
+    - [x] Insert System prompt for Crop Guidance, Pest Control, Irrigation, Seasons & Schemes
+    - [x] Refactor Chatbot to Dedicated Page
+        - [x] Create `/chatbot` route in `app.py`
+        - [x] Create `chatbot.html` template
+        - [x] Update `base.html` floating button to redirect
+        - [x] Refactor `main.js` for dedicated page logic
+- [x] Enhance Device Responsiveness
+    - [x] Make `chatbot.html` fully responsive (mobile/tablet/desktop)
+    - [x] Audit and fix global layout responsiveness issues in `base.html` and `style.css`
+    - [x] Verify UI on simulated mobile dimensions
+- [x] Enhance Voice Workflow
+    - [x] Disable auto-send after voice recognition in `main.js`
+    - [x] Implement visual feedback when transcript is ready
+- [x] Final Review and Documentation
