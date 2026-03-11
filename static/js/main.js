@@ -72,6 +72,20 @@ function appendMessage(sender, text, isError = false) {
   formattedText = formattedText.replace(/\n/g, '<br>');
 
   innerDiv.innerHTML = formattedText;
+
+  // Add manual play button for AI messages
+  if (sender === 'ai' && !isError) {
+    const playBtn = document.createElement('button');
+    playBtn.className = 'btn btn-link text-white text-opacity-50 p-0 ms-2 mt-2';
+    playBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+    playBtn.style.fontSize = '0.8rem';
+    playBtn.onclick = (e) => {
+      e.preventDefault();
+      speakAIResponse(text);
+    };
+    innerDiv.appendChild(playBtn);
+  }
+
   msgDiv.appendChild(innerDiv);
   chatMessages.appendChild(msgDiv);
 
@@ -215,8 +229,19 @@ $("<style>")
     ")
   .appendTo("head");
 
-// --- Text to Speech (AI Voice Output) ---
 let isVoiceOutputEnabled = true;
+
+function toggleVoiceOutput() {
+  isVoiceOutputEnabled = !isVoiceOutputEnabled;
+  const voiceToggleBtn = document.getElementById('voiceToggleBtn');
+  if (voiceToggleBtn) {
+    voiceToggleBtn.innerHTML = isVoiceOutputEnabled ?
+      '<i class="fas fa-volume-up"></i>' :
+      '<i class="fas fa-volume-mute"></i>';
+    voiceToggleBtn.classList.toggle('text-opacity-50', !isVoiceOutputEnabled);
+  }
+  console.log(`Voice output ${isVoiceOutputEnabled ? 'enabled' : 'disabled'}`);
+}
 
 function speakAIResponse(text) {
   if (!isVoiceOutputEnabled || !('speechSynthesis' in window)) {

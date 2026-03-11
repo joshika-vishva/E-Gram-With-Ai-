@@ -29,137 +29,145 @@
                         </div>
                     </div>
                     <div>
-                        <a href="/"
-                            class="btn btn-outline-light btn-sm rounded-pill px-3 border-opacity-25 shadow-sm home-btn">
-                            <i class="fas fa-home me-1"></i> <span class="d-none d-sm-inline">Home</span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Messages Area -->
-                <div id="chatMessages" class="card-body overflow-auto p-3 p-md-5"
-                    style="flex-grow: 1; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth;">
-                    <!-- Initial AI Wave -->
-                    <div class="d-flex w-100 flex-column align-items-start mb-2">
-                        <div class="glass-panel text-white p-3 p-md-4 shadow-sm"
-                            style="max-width: 92%; font-size: 0.95rem; border-radius: 20px 20px 20px 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); line-height: 1.6;">
-                            <div class="fw-bold mb-2">வணக்கம்! நான் சாரா. / Greetings! I am Zara.</div>
-                            நான் உங்கள் பிரத்யேக விவசாய உதவி மையம். பயிர் சாகுபடி, மண் தரம், பூச்சி கட்டுப்பாடு, உர
-                            மேலாண்மை அல்லது நேரடி அரசு திட்டங்கள் பற்றி என்னிடம் விரிவாகக் கேட்கலாம். <br><br>
-                            I am Zara, your dedicated Agriculture Assistant. You can ask me in detail about crop
-                            cultivation, soil health, pest control, fertilizer management, or direct government schemes.
+                        <div class="d-flex gap-2">
+                            <button id="voiceToggleBtn" onclick="toggleVoiceOutput()"
+                                class="btn btn-outline-light btn-sm rounded-circle d-flex align-items-center justify-content-center border-opacity-25 shadow-sm"
+                                style="width: 32px; height: 32px;" title="Toggle AI Voice">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <a href="/"
+                                class="btn btn-outline-light btn-sm rounded-pill px-3 border-opacity-25 shadow-sm home-btn">
+                                <i class="fas fa-home me-1"></i> <span class="d-none d-sm-inline">Home</span>
+                            </a>
                         </div>
                     </div>
-                </div>
 
-                <!-- Input Area -->
-                <div class="p-3 p-md-4"
-                    style="background: rgba(0,0,0,0.25); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid rgba(255,255,255,0.15);">
-                    <form id="chatForm" class="d-flex align-items-center gap-2 gap-md-3 m-0"
-                        onsubmit="sendChatMessage(event)">
-                        <button type="button"
-                            class="btn text-white rounded-circle d-flex align-items-center justify-content-center transition shadow-sm voice-action-btn"
-                            id="voiceBtn" onclick="startVoiceRecognition()"
-                            style="width: 45px; height: 45px; flex-shrink: 0; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);"
-                            title="Speak in Tamil or English">
-                            <i class="fas fa-microphone"></i>
-                        </button>
-
-                        <div class="flex-grow-1 position-relative">
-                            <input type="text" id="chatInput"
-                                class="form-control glass-input w-100 text-white shadow-none py-2 py-md-3 px-3 px-md-4 fw-light chatbot-input"
-                                placeholder="Ask about crops..." autocomplete="off" required
-                                style="border-radius: 30px; background: rgba(0,0,0,0.3) !important; border: 1px solid rgba(255,255,255,0.2) !important;">
+                    <!-- Messages Area -->
+                    <div id="chatMessages" class="card-body overflow-auto p-3 p-md-5"
+                        style="flex-grow: 1; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth;">
+                        <!-- Initial AI Wave -->
+                        <div class="d-flex w-100 flex-column align-items-start mb-2">
+                            <div class="glass-panel text-white p-3 p-md-4 shadow-sm"
+                                style="max-width: 92%; font-size: 0.95rem; border-radius: 20px 20px 20px 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); line-height: 1.6;">
+                                <div class="fw-bold mb-2">வணக்கம்! நான் சாரா. / Greetings! I am Zara.</div>
+                                நான் உங்கள் பிரத்யேக விவசாய உதவி மையம். பயிர் சாகுபடி, மண் தரம், பூச்சி கட்டுப்பாடு, உர
+                                மேலாண்மை அல்லது நேரடி அரசு திட்டங்கள் பற்றி என்னிடம் விரிவாகக் கேட்கலாம். <br><br>
+                                I am Zara, your dedicated Agriculture Assistant. You can ask me in detail about crop
+                                cultivation, soil health, pest control, fertilizer management, or direct government
+                                schemes.
+                            </div>
                         </div>
+                    </div>
 
-                        <button type="submit"
-                            class="btn rounded-circle d-flex align-items-center justify-content-center shadow-lg transition send-btn"
-                            style="width: 45px; height: 45px; flex-shrink: 0; background: linear-gradient(135deg, #27ae60, #2ecc71); border: none;">
-                            <i class="fas fa-paper-plane text-white"></i>
-                        </button>
-                    </form>
-                    <div class="text-center mt-2 mt-md-3">
-                        <small class="text-white text-opacity-50 powered-by-text" style="font-size: 0.75rem;">Powered by
-                            Zara AI • Bilingual Support</small>
+                    <!-- Input Area -->
+                    <div class="p-3 p-md-4"
+                        style="background: rgba(0,0,0,0.25); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid rgba(255,255,255,0.15);">
+                        <form id="chatForm" class="d-flex align-items-center gap-2 gap-md-3 m-0"
+                            onsubmit="sendChatMessage(event)">
+                            <button type="button"
+                                class="btn text-white rounded-circle d-flex align-items-center justify-content-center transition shadow-sm voice-action-btn"
+                                id="voiceBtn" onclick="startVoiceRecognition()"
+                                style="width: 45px; height: 45px; flex-shrink: 0; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);"
+                                title="Speak in Tamil or English">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+
+                            <div class="flex-grow-1 position-relative">
+                                <input type="text" id="chatInput"
+                                    class="form-control glass-input w-100 text-white shadow-none py-2 py-md-3 px-3 px-md-4 fw-light chatbot-input"
+                                    placeholder="Ask about crops..." autocomplete="off" required
+                                    style="border-radius: 30px; background: rgba(0,0,0,0.3) !important; border: 1px solid rgba(255,255,255,0.2) !important;">
+                            </div>
+
+                            <button type="submit"
+                                class="btn rounded-circle d-flex align-items-center justify-content-center shadow-lg transition send-btn"
+                                style="width: 45px; height: 45px; flex-shrink: 0; background: linear-gradient(135deg, #27ae60, #2ecc71); border: none;">
+                                <i class="fas fa-paper-plane text-white"></i>
+                            </button>
+                        </form>
+                        <div class="text-center mt-2 mt-md-3">
+                            <small class="text-white text-opacity-50 powered-by-text"
+                                style="font-size: 0.75rem;">Powered by
+                                Zara AI • Bilingual Support</small>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<style>
-    /* Responsive heights */
-    .main-chat-card {
-        height: 85vh;
-        max-height: 85vh;
-    }
-
-    @media (max-width: 768px) {
+    <style>
+        /* Responsive heights */
         .main-chat-card {
-            height: calc(100vh - 40px);
-            max-height: calc(100vh - 40px);
-            border-radius: 12px !important;
+            height: 85vh;
+            max-height: 85vh;
         }
 
-        .chatbot-container {
-            padding-left: 10px !important;
-            padding-right: 10px !important;
+        @media (max-width: 768px) {
+            .main-chat-card {
+                height: calc(100vh - 40px);
+                max-height: calc(100vh - 40px);
+                border-radius: 12px !important;
+            }
+
+            .chatbot-container {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+
+            .chatbot-input {
+                font-size: 0.9rem !important;
+            }
         }
 
-        .chatbot-input {
-            font-size: 0.9rem !important;
-        }
-    }
-
-    .send-btn:hover {
-        transform: scale(1.1) rotate(-5deg);
-        box-shadow: 0 0 20px rgba(46, 204, 113, 0.6);
-    }
-
-    .pulse-dot {
-        animation: pulse-dot-anim 2s infinite;
-    }
-
-    @keyframes pulse-dot-anim {
-        0% {
-            opacity: 1;
-            transform: scale(1);
+        .send-btn:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.6);
         }
 
-        50% {
-            opacity: 0.5;
-            transform: scale(1.2);
+        .pulse-dot {
+            animation: pulse-dot-anim 2s infinite;
         }
 
-        100% {
-            opacity: 1;
-            transform: scale(1);
+        @keyframes pulse-dot-anim {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
-    }
 
-    #chatMessages::-webkit-scrollbar {
-        width: 6px;
-    }
+        #chatMessages::-webkit-scrollbar {
+            width: 6px;
+        }
 
-    #chatMessages::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.1);
-    }
+        #chatMessages::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
 
-    #chatMessages::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 10px;
-    }
+        #chatMessages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
 
-    #chatMessages::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.3);
-    }
-</style>
+        #chatMessages::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const input = document.getElementById('chatInput');
-        if (input) input.focus();
-    });
-</script>
-{% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('chatInput');
+            if (input) input.focus();
+        });
+    </script>
+    {% endblock %}
