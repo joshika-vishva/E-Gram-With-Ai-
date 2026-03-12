@@ -54,16 +54,15 @@ function appendMessage(sender, text, isError = false) {
   const innerDiv = document.createElement('div');
 
   if (sender === 'user') {
-    innerDiv.className = 'bg-success text-white p-3 rounded-4 rounded-bottom-0 shadow-sm';
-    innerDiv.style.maxWidth = '85%';
-    innerDiv.style.fontSize = '0.95rem';
-    innerDiv.style.borderBottomRightRadius = '0 !important';
-    innerDiv.style.background = 'linear-gradient(135deg, #2c5540, #1e3a2b)';
+    innerDiv.className = 'message-content user-bubble shadow-md';
+    innerDiv.style.background = 'linear-gradient(135deg, #27ae60, #1e3a2b)';
+    innerDiv.style.color = 'white';
+    innerDiv.style.borderRadius = '24px 24px 4px 24px';
   } else {
-    innerDiv.className = `glass-panel ${isError ? 'text-danger fw-bold' : 'text-white'} p-3 rounded-4 rounded-top-0 mb-1 shadow-sm`;
-    innerDiv.style.maxWidth = '85%';
-    innerDiv.style.fontSize = '0.95rem';
-    innerDiv.style.borderTopLeftRadius = '0 !important';
+    innerDiv.className = `message-content glass-bubble shadow-sm ${isError ? 'text-danger fw-bold border-danger' : 'text-white'}`;
+    innerDiv.style.background = 'rgba(255, 255, 255, 0.1)';
+    innerDiv.style.border = '1px solid rgba(255, 255, 255, 0.15)';
+    innerDiv.style.borderRadius = '24px 24px 24px 4px';
   }
 
   // Basic markdown to HTML (for bold text mostly)
@@ -97,9 +96,9 @@ function showTypingIndicator() {
   const typingId = 'typing-' + Date.now();
   const msgDiv = document.createElement('div');
   msgDiv.id = typingId;
-  msgDiv.className = `d-flex w-100 flex-column align-items-start mb-2`;
+  msgDiv.className = `message-row ai-msg animate__animated animate__fadeInUp`;
   msgDiv.innerHTML = `
-          <div class="glass-panel p-3 rounded-4 rounded-top-0 mb-1 shadow-sm d-flex align-items-center" style="max-width: 85%; border-top-left-radius: 0 !important;">
+          <div class="message-content glass-bubble shadow-sm d-flex align-items-center" style="background: rgba(255,255,255,0.1); border-radius: 24px 24px 24px 4px; padding: 15px 25px;">
               <span class="typing-dot"></span>
               <span class="typing-dot"></span>
               <span class="typing-dot"></span>

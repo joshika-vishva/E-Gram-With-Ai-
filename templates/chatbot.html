@@ -1,173 +1,390 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container-fluid py-md-5 py-3 chatbot-container"
-    style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
-    <div class="row w-100 justify-content-center">
-        <div class="col-lg-10 col-xl-8 col-12 p-0 p-md-3">
-            <!-- Chat Container -->
-            <div class="card glass-panel border-0 overflow-hidden shadow-lg animate__animated animate__fadeInUp main-chat-card"
-                style="display: flex; flex-direction: column; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 2px rgba(255,255,255,0.3) inset;">
+<div class="container-fluid chatbot-page-wrapper">
+    <div class="row min-vh-100 align-items-center justify-content-center p-2 p-md-3 p-lg-4">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+            <!-- Main Chat Card -->
+            <div class="card main-chat-card glass-panel shadow-2xl overflow-hidden animate__animated animate__zoomIn">
 
                 <!-- Chat Header -->
-                <div class="p-3 p-md-4 d-flex justify-content-between align-items-center"
-                    style="background: rgba(30, 58, 43, 0.45); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255,255,255,0.15); z-index: 2;">
+                <nav
+                    class="chat-header px-3 px-md-4 py-3 d-flex justify-content-between align-items-center bg-dark-green-glass">
                     <div class="d-flex align-items-center">
-                        <div class="d-flex align-items-center justify-content-center me-2 me-md-3 chat-avatar"
-                            style="width: 40px; height: 40px; background: linear-gradient(135deg, #27ae60, #2ecc71); border-radius: 12px; box-shadow: 0 4px 15px rgba(39,174,96,0.4);">
-                            <i class="fas fa-robot text-white fa-lg"></i>
+                        <div class="avatar-ring me-3">
+                            <div class="avatar-bg shadow-lg">
+                                <i class="fas fa-robot text-white"></i>
+                            </div>
+                            <span class="status-indicator-ring"></span>
                         </div>
-                        <div>
-                            <h5 class="mb-0 fw-bold text-white shadow-sm chat-title" style="letter-spacing: 0.5px;">Zara
-                                - AI Assistant</h5>
-                            <small class="text-white text-opacity-75 fw-medium d-flex align-items-center status-text"
-                                style="font-size: 0.8rem;">
-                                <span class="pulse-dot me-2"
-                                    style="width:8px; height:8px; border-radius:50%; background-color:#2ecc71; box-shadow: 0 0 10px #2ecc71;"></span>
-                                Online Expert
-                            </small>
+                        <div class="header-info">
+                            <h5 class="mb-0 fw-bold text-white tracking-tight">Zara AI Assistant</h5>
+                            <div class="d-flex align-items-center mt-1">
+                                <span class="live-dot pulse"></span>
+                                <small class="text-white-50 fw-semibold text-uppercase ls-1">Online Professional</small>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <div class="d-flex gap-2">
-                            <button id="voiceToggleBtn" onclick="toggleVoiceOutput()"
-                                class="btn btn-outline-light btn-sm rounded-circle d-flex align-items-center justify-content-center border-opacity-25 shadow-sm"
-                                style="width: 32px; height: 32px;" title="Toggle AI Voice">
+
+                    <div class="header-actions">
+                        <div class="btn-group-premium">
+                            <button id="voiceToggleBtn" onclick="toggleVoiceOutput()" class="action-btn-circle me-2"
+                                title="Toggle Voice Output">
                                 <i class="fas fa-volume-up"></i>
                             </button>
-                            <a href="/"
-                                class="btn btn-outline-light btn-sm rounded-pill px-3 border-opacity-25 shadow-sm home-btn">
-                                <i class="fas fa-home me-1"></i> <span class="d-none d-sm-inline">Home</span>
+                            <a href="/" class="action-btn-pill shadow-sm" title="Go Home">
+                                <i class="fas fa-home"></i> <span>Home</span>
                             </a>
                         </div>
                     </div>
+                </nav>
 
-                    <!-- Messages Area -->
-                    <div id="chatMessages" class="card-body overflow-auto p-3 p-md-5"
-                        style="flex-grow: 1; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth;">
-                        <!-- Initial AI Wave -->
-                        <div class="d-flex w-100 flex-column align-items-start mb-2">
-                            <div class="glass-panel text-white p-3 p-md-4 shadow-sm"
-                                style="max-width: 92%; font-size: 0.95rem; border-radius: 20px 20px 20px 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); line-height: 1.6;">
-                                <div class="fw-bold mb-2">வணக்கம்! நான் சாரா. / Greetings! I am Zara.</div>
-                                நான் உங்கள் பிரத்யேக விவசாய உதவி மையம். பயிர் சாகுபடி, மண் தரம், பூச்சி கட்டுப்பாடு, உர
-                                மேலாண்மை அல்லது நேரடி அரசு திட்டங்கள் பற்றி என்னிடம் விரிவாகக் கேட்கலாம். <br><br>
-                                I am Zara, your dedicated Agriculture Assistant. You can ask me in detail about crop
-                                cultivation, soil health, pest control, fertilizer management, or direct government
-                                schemes.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Input Area -->
-                    <div class="p-3 p-md-4"
-                        style="background: rgba(0,0,0,0.25); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-top: 1px solid rgba(255,255,255,0.15);">
-                        <form id="chatForm" class="d-flex align-items-center gap-2 gap-md-3 m-0"
-                            onsubmit="sendChatMessage(event)">
-                            <button type="button"
-                                class="btn text-white rounded-circle d-flex align-items-center justify-content-center transition shadow-sm voice-action-btn"
-                                id="voiceBtn" onclick="startVoiceRecognition()"
-                                style="width: 45px; height: 45px; flex-shrink: 0; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);"
-                                title="Speak in Tamil or English">
-                                <i class="fas fa-microphone"></i>
-                            </button>
-
-                            <div class="flex-grow-1 position-relative">
-                                <input type="text" id="chatInput"
-                                    class="form-control glass-input w-100 text-white shadow-none py-2 py-md-3 px-3 px-md-4 fw-light chatbot-input"
-                                    placeholder="Ask about crops..." autocomplete="off" required
-                                    style="border-radius: 30px; background: rgba(0,0,0,0.3) !important; border: 1px solid rgba(255,255,255,0.2) !important;">
-                            </div>
-
-                            <button type="submit"
-                                class="btn rounded-circle d-flex align-items-center justify-content-center shadow-lg transition send-btn"
-                                style="width: 45px; height: 45px; flex-shrink: 0; background: linear-gradient(135deg, #27ae60, #2ecc71); border: none;">
-                                <i class="fas fa-paper-plane text-white"></i>
-                            </button>
-                        </form>
-                        <div class="text-center mt-2 mt-md-3">
-                            <small class="text-white text-opacity-50 powered-by-text"
-                                style="font-size: 0.75rem;">Powered by
-                                Zara AI • Bilingual Support</small>
+                <!-- Messages Container -->
+                <div id="chatMessages" class="chat-body scrollbar-custom">
+                    <!-- Initial AI Wave -->
+                    <div class="message-row ai-msg animate__animated animate__fadeInLeft">
+                        <div class="message-content glass-bubble shadow-sm">
+                            <div class="welcome-header">வணக்கம்! நான் சாரா. / Greetings! I am Zara.</div>
+                            <p class="mb-0">நான் உங்கள் பிரத்யேக விவசாய உதவி மையம். பயிர் சாகுபடி, மண் தரம், பூச்சி
+                                கட்டுப்பாடு, உர மேலாண்மை அல்லது நேரடி அரசு திட்டங்கள் பற்றி என்னிடம் விரிவாகக்
+                                கேட்கலாம்.</p>
+                            <hr class="border-white opacity-10 my-2">
+                            <p class="mb-0 opacity-90">I am Zara, your dedicated Agriculture Assistant. You can ask me
+                                in detail about crop cultivation, soil health, pest control, fertilizer management, or
+                                direct government schemes.</p>
                         </div>
                     </div>
                 </div>
+
+                <!-- Input Footer -->
+                <footer class="chat-footer px-3 px-md-4 py-3 py-md-4 bg-black-glass border-top-glass">
+                    <form id="chatForm" class="input-container-premium" onsubmit="sendChatMessage(event)">
+                        <button type="button" class="voice-trigger shadow-lg" id="voiceBtn"
+                            onclick="startVoiceRecognition()" title="Speak (Tamil/English)">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+
+                        <div class="input-wrapper">
+                            <input type="text" id="chatInput" class="chat-text-input no-border-focus"
+                                placeholder="Type your farming question here..." autocomplete="off" required>
+                            <div class="input-glow"></div>
+                        </div>
+
+                        <button type="submit" class="send-trigger shadow-lg">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                    <div class="brand-footer text-center mt-3">
+                        <span class="badge rounded-pill bg-white bg-opacity-10 text-white-50 px-3 py-2 fw-medium">
+                            <i class="fas fa-sparkles me-2 text-warning"></i> Powered by Zara AI • Intelligent Agronomy
+                        </span>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
+</div>
 
-    <style>
-        /* Responsive heights */
+<style>
+    :root {
+        --zara-primary: #2ecc71;
+        --zara-dark: #1e3a2b;
+        --glass-white: rgba(255, 255, 255, 0.1);
+        --glass-black: rgba(0, 0, 0, 0.4);
+        --border-glass: rgba(255, 255, 255, 0.15);
+    }
+
+    .chatbot-page-wrapper {
+        background: transparent;
+        overflow: hidden;
+    }
+
+    .main-chat-card {
+        height: 85vh;
+        display: flex;
+        flex-direction: column;
+        border-radius: 32px !important;
+        border: 1px solid var(--border-glass) !important;
+        background: rgba(30, 58, 43, 0.4) !important;
+        backdrop-filter: blur(40px) saturate(180%);
+        -webkit-backdrop-filter: blur(40px) saturate(180%);
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Header Styles */
+    .bg-dark-green-glass {
+        background: rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid var(--border-glass);
+    }
+
+    .avatar-ring {
+        position: relative;
+        padding: 2px;
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        border-radius: 16px;
+    }
+
+    .avatar-bg {
+        width: 44px;
+        height: 44px;
+        background: var(--zara-dark);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+    }
+
+    .status-indicator-ring {
+        position: absolute;
+        bottom: -2px;
+        right: -2px;
+        width: 14px;
+        height: 14px;
+        background: #2ecc71;
+        border: 2px solid #1e3a2b;
+        border-radius: 50%;
+    }
+
+    .live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #2ecc71;
+        margin-right: 8px;
+    }
+
+    .ls-1 {
+        letter-spacing: 1px;
+    }
+
+    /* Action Buttons */
+    .action-btn-circle {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--glass-white);
+        border: 1px solid var(--border-glass);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn-circle:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .action-btn-pill {
+        background: white;
+        color: var(--zara-dark);
+        padding: 5px 15px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn-pill:hover {
+        background: #f0f0f0;
+        transform: translateY(-2px);
+        color: black;
+    }
+
+    /* Body/Messages Area */
+    .chat-body {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .message-row {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ai-msg {
+        align-items: flex-start;
+    }
+
+    .user-msg {
+        align-items: flex-end;
+    }
+
+    .message-content {
+        padding: 1.25rem 1.5rem;
+        border-radius: 24px;
+        max-width: 85%;
+        line-height: 1.6;
+    }
+
+    .ai-msg .message-content {
+        background: var(--glass-white);
+        color: white;
+        border-bottom-left-radius: 4px;
+        border: 1px solid var(--border-glass);
+    }
+
+    .user-msg .message-content {
+        background: linear-gradient(135deg, #27ae60, #1e3a2b);
+        color: white;
+        border-bottom-right-radius: 4px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .welcome-header {
+        font-weight: 800;
+        color: #2ecc71;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    /* Footer / Input */
+    .chat-footer {
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    .input-container-premium {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .voice-trigger {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--glass-white);
+        border: 1px solid var(--border-glass);
+        color: white;
+        font-size: 1.2rem;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .voice-trigger:hover {
+        background: var(--zara-primary);
+        transform: scale(1.1);
+    }
+
+    .input-wrapper {
+        flex-grow: 1;
+        position: relative;
+    }
+
+    .chat-text-input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--border-glass);
+        border-radius: 30px;
+        padding: 14px 25px;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .chat-text-input:focus {
+        background: rgba(0, 0, 0, 0.6);
+        border-color: var(--zara-primary);
+        box-shadow: 0 0 20px rgba(46, 204, 113, 0.2);
+        outline: none;
+    }
+
+    .send-trigger {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: var(--zara-primary);
+        border: none;
+        color: white;
+        font-size: 1.1rem;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .send-trigger:hover {
+        transform: scale(1.1) rotate(-10deg);
+        filter: brightness(1.1);
+    }
+
+    /* Scrollbar */
+    .scrollbar-custom::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+    }
+
+    /* Animations */
+    .pulse {
+        animation: pulse-anim 2s infinite;
+    }
+
+    @keyframes pulse-anim {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: scale(1.2);
+            opacity: 0.7;
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    /* Mobile Adaptations */
+    @media (max-width: 768px) {
         .main-chat-card {
-            height: 85vh;
-            max-height: 85vh;
+            height: 95vh;
+            border-radius: 24px !important;
         }
 
-        @media (max-width: 768px) {
-            .main-chat-card {
-                height: calc(100vh - 40px);
-                max-height: calc(100vh - 40px);
-                border-radius: 12px !important;
-            }
-
-            .chatbot-container {
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-            }
-
-            .chatbot-input {
-                font-size: 0.9rem !important;
-            }
+        .chat-body {
+            padding: 1.25rem;
         }
 
-        .send-btn:hover {
-            transform: scale(1.1) rotate(-5deg);
-            box-shadow: 0 0 20px rgba(46, 204, 113, 0.6);
+        .message-content {
+            max-width: 90%;
+            font-size: 0.9rem;
         }
 
-        .pulse-dot {
-            animation: pulse-dot-anim 2s infinite;
+        .voice-trigger,
+        .send-trigger {
+            width: 44px;
+            height: 44px;
+            font-size: 1rem;
         }
 
-        @keyframes pulse-dot-anim {
-            0% {
-                opacity: 1;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.5;
-                transform: scale(1.2);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .chat-text-input {
+            padding: 10px 20px;
+            font-size: 0.9rem;
         }
+    }
+</style>
 
-        #chatMessages::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        #chatMessages::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        #chatMessages::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-        }
-
-        #chatMessages::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const input = document.getElementById('chatInput');
-            if (input) input.focus();
-        });
-    </script>
-    {% endblock %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('chatInput');
+        if (input) input.focus();
+    });
+</script>
+{% endblock %}
