@@ -209,7 +209,7 @@ def api_chat():
         user_message = data['message']
         
         response = chat_client.models.generate_content(
-            model="models/gemini-2.0-flash",
+            model="models/gemini-1.5-flash",
             contents=user_message,
             config={
                 "system_instruction": system_instruction,
@@ -221,7 +221,10 @@ def api_chat():
         import traceback
         traceback.print_exc()
         error_msg = str(e)
-        if "User location is not supported" in error_msg:
+        
+        if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
+            error_msg = "The AI is currently busy (limit reached). Please wait 60 seconds and try again."
+        elif "User location is not supported" in error_msg:
             error_msg = "The Google AI API is currently restricted in the region where this server is hosted. Please try again later or contact support."
         
         print(f"Chat API Error: {e}")
