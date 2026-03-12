@@ -209,7 +209,7 @@ def api_chat():
         user_message = data['message']
         
         response = chat_client.models.generate_content(
-            model="models/gemini-1.5-flash",
+            model="models/gemini-flash-latest",
             contents=user_message,
             config={
                 "system_instruction": system_instruction,
