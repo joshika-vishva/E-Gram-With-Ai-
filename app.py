@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 import os
 import models
 from translations import get_translation
-import google.generativeai as genai
+from google import genai
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -11,8 +11,9 @@ load_dotenv()
 
 # Configure Gemini AI
 api_key = os.getenv("GEMINI_API_KEY")
+client = None
 if api_key:
-    genai.configure(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "super_secret_key_egram")
@@ -189,42 +190,33 @@ Safety Rules:
 * Encourage farmers to consult agricultural officers for serious problems.
 """
 
-# Initialize model
-try:
-    model = genai.GenerativeModel(
-        model_name="gemini-1.5-flash",
-        system_instruction=system_instruction
-    )
-except Exception as e:
-    model = None
-    print(f"Failed to initialize Gemini model: {e}")
 
+# Chat API Route
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
+    current_api_key = os.getenv("GEMINI_API_KEY")
+    if not current_api_key:
         return {"error": "AI Chatbot is currently unavailable (API Key missing in environment)."}, 503
         
     try:
-        genai.configure(api_key=api_key)
-        local_model = genai.GenerativeModel(
-            model_name="gemini-1.5-flash",
-            system_instruction=system_instruction
+        # Re-initialize client if API key changed or not initialized
+        chat_client = genai.Client(api_key=current_api_key)
+        
+        data = request.get_json()
+        if not data or 'message' not in data:
+            return {"error": "Message is required"}, 400
+            
+        user_message = data['message']
+        
+        response = chat_client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=user_message,
+            config={
+                "system_instruction": system_instruction,
+            }
         )
-    except Exception as e:
-        print(f"Model init error: {e}")
-        return {"error": f"Failed to initialize AI model: {str(e)}"}, 500
-        
-    data = request.get_json()
-    if not data or 'message' not in data:
-        return {"error": "Message is required"}, 400
-        
-    user_message = data['message']
-    
-    try:
-        chat = local_model.start_chat(history=[])
-        response = chat.send_message(user_message)
         return {"response": response.text}
+        
     except Exception as e:
         import traceback
         traceback.print_exc()
